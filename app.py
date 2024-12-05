@@ -1,5 +1,4 @@
 import gradio as gr
-import spaces
 from gradio_litmodel3d import LitModel3D
 
 import os
@@ -80,7 +79,6 @@ def unpack_state(state: dict) -> Tuple[Gaussian, edict, str]:
     return gs, mesh, state['trial_id']
 
 
-@spaces.GPU
 def image_to_3d(trial_id: str, seed: int, randomize_seed: bool, ss_guidance_strength: float, ss_sampling_steps: int, slat_guidance_strength: float, slat_sampling_steps: int) -> Tuple[dict, str]:
     """
     Convert an image to a 3D model.
@@ -125,7 +123,6 @@ def image_to_3d(trial_id: str, seed: int, randomize_seed: bool, ss_guidance_stre
     return state, video_path
 
 
-@spaces.GPU
 def extract_glb(state: dict, mesh_simplify: float, texture_size: int) -> Tuple[str, str]:
     """
     Extract a GLB file from the 3D model.
@@ -250,4 +247,4 @@ with gr.Blocks() as demo:
 if __name__ == "__main__":
     pipeline = TrellisImageTo3DPipeline.from_pretrained("JeffreyXiang/TRELLIS-image-large")
     pipeline.cuda()
-    demo.launch()
+    demo.launch(share=True)
